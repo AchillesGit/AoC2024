@@ -1032,3 +1032,69 @@ function solutionPartOne() {
     }
   }
 }
+
+function solutionPartTwo() {
+  const inputAsStringArray = input.split('\n');
+  let sumOfSafe = 0;
+  for (let i = 0; i < inputAsStringArray.length; i++) {
+    let numberRow = inputAsStringArray[i].split(' ').map((num) => Number(num));
+    let isSafe = true;
+
+    isSafe = checkRowSafety(numberRow, isSafe);
+
+    if (isSafe) {
+      sumOfSafe++;
+    } else {
+      for (let j = 0; j < numberRow.length; j++) {
+        isSafe = true;
+        let numberRowCopy = [...numberRow];
+        numberRowCopy.splice(j, 1);
+        isSafe = checkRowSafety(numberRowCopy, isSafe);
+        if (isSafe) {
+          sumOfSafe++;
+          break;
+        }
+      }
+    }
+  }
+  console.log(sumOfSafe);
+}
+
+solutionPartTwo();
+
+function checkRowSafety(numberRow, isSafe) {
+  for (let j = 1; j < numberRow.length; j++) {
+    const element = numberRow[j];
+    const previousElement = numberRow[j - 1];
+    if (
+      Math.abs(element - previousElement) > 3 ||
+      element === previousElement
+    ) {
+      isSafe = false;
+      break;
+    }
+    if (previousElement > element) {
+      isSafe = false;
+      break;
+    }
+  }
+  if (isSafe) return isSafe;
+  isSafe = true;
+
+  for (let j = 1; j < numberRow.length; j++) {
+    const element = numberRow[j];
+    const previousElement = numberRow[j - 1];
+    if (
+      Math.abs(element - previousElement) > 3 ||
+      element === previousElement
+    ) {
+      isSafe = false;
+      break;
+    }
+    if (previousElement < element) {
+      isSafe = false;
+      break;
+    }
+  }
+  return isSafe;
+}
