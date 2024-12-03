@@ -999,6 +999,36 @@ const input = `6 8 9 10 12 13 12
 43 46 47 50 52 54 56 58
 44 45 48 51 52 54`;
 
-const inputAsStringArray = input.split('\n');
-
-let sumOfSafe = 0;
+function solutionPartOne() {
+  const inputAsStringArray = input.split('\n');
+  let sumOfSafe = 0;
+  for (let i = 0; i < inputAsStringArray.length; i++) {
+    const numberRow = inputAsStringArray[i]
+      .split(' ')
+      .map((num) => Number(num));
+    let isIncreasing = numberRow[0] < numberRow[1];
+    let isSafe = true;
+    for (let j = 1; j < numberRow.length; j++) {
+      const element = numberRow[j];
+      const previousElement = numberRow[j - 1];
+      if (
+        Math.abs(element - previousElement) > 3 ||
+        element === previousElement
+      ) {
+        isSafe = false;
+        break;
+      }
+      if (isIncreasing && previousElement > element) {
+        isSafe = false;
+        break;
+      }
+      if (!isIncreasing && previousElement < element) {
+        isSafe = false;
+        break;
+      }
+    }
+    if (isSafe) {
+      sumOfSafe++;
+    }
+  }
+}
