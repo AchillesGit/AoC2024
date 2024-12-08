@@ -32,9 +32,12 @@ for (const data of parsedData) {
     for (const branch of tree) {
       const sumValue = branch + factor;
       const multipliedValue = branch * factor;
+      const concatenatedNumber = Number(branch.toString() + factor.toString());
       if (
         index === data.factors.length - 1 &&
-        (sumValue === result || multipliedValue === result)
+        (sumValue === result ||
+          multipliedValue === result ||
+          concatenatedNumber === result)
       ) {
         sum += result;
         break;
@@ -44,6 +47,9 @@ for (const data of parsedData) {
       }
       if (multipliedValue <= result) {
         updatedTree.push(multipliedValue);
+      }
+      if (concatenatedNumber <= result) {
+        updatedTree.push(concatenatedNumber);
       }
     }
     tree = [...updatedTree];
