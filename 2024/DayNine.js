@@ -32,22 +32,31 @@ function parseData() {
 parseData();
 
 function sortParsedData() {
-  for (let i = 0; i < parsedData.length; i++) {
-    let firstPointIndex = -1;
-    let lastNumberIndex = -1;
-    let lastNumber = '';
-    for (let j = i; j < parsedData.length; j++) {
-      let element = parsedData[j];
-      if (firstPointIndex === -1 && element === '.') {
-        firstPointIndex = j;
-      } else if (element !== '.') {
-        lastNumberIndex = j;
-        lastNumber = element;
+  let lastElement = '.';
+  for (let i = parsedData.length - 1; i >= 0; i--) {
+    const element = parsedData[i];
+    if (element !== '.' && lastElement !== element) {
+      lastElement = element;
+      const startIndex = parsedData.findIndex((data) => data === element);
+      const lenOfNumbers = i - startIndex + 1;
+      console.log(element, lenOfNumbers);
+      let followingDots = 0;
+      for (let j = 0; j < parsedData.length; j++) {
+        const isDot = parsedData[j] === '.';
+        if (isDot) {
+          followingDots++;
+        } else {
+          followingDots = 0;
+        }
+
+        if (followingDots === lenOfNumbers && j < i) {
+          for (let k = 0; k < lenOfNumbers; k++) {
+            parsedData[k + startIndex] = '.';
+            parsedData[k + j - lenOfNumbers + 1] = element;
+          }
+          j = parsedData.length;
+        }
       }
-    }
-    if (firstPointIndex < lastNumberIndex) {
-      parsedData[firstPointIndex] = lastNumber;
-      parsedData[lastNumberIndex] = '.';
     }
   }
 }
